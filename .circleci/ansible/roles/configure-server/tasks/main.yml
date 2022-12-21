@@ -31,14 +31,9 @@
     name: ["nodejs", "npm" ,"pm2"]
     state: latest
     update_cache: yes
-    
-- name: Copy python script
-  template:
-    src: ".circleci/files/script.sh"
-    dest: "/home/ubuntu/script.sh"
+
+- name: Install Python
+  raw: apt -y update && apt install -y python-minimal
+  when: check_python.rc != 0
 
 
-- name: install python
-  raw: 'cat < /home/ubuntu/script.sh'
-  args:
-    executable: /bin/bash
