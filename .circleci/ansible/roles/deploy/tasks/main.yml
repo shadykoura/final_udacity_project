@@ -61,7 +61,7 @@
 - name: "Executing node"
   shell: |
     npm i -g pm2
-    pm2 start ~/backend_app_dir/main.js -f
+    pm2 start /home/ubuntu/backend_app_dir/main.js -f
   register: execute_node
   
   
