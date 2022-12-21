@@ -21,9 +21,8 @@
     
 - name: "Executing node"
   shell: |
-    export
-    cd ~/backend_app_dir
-    pm2 start main.js
+    sudo npm i -g pm2
+    pm2 start ~/backend_app_dir/main.js -f
   register: execute_node
   
   
