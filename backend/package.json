@@ -1,7 +1,7 @@
 {
   "name": "glee2",
   "version": "1.0.0",
-  "private": true
+  "private": "true"
   "description": "This is just a test.",
   "author": "",
   "license": "MIT",
