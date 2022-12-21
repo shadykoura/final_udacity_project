@@ -31,6 +31,10 @@
     "migrations:revert": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:revert",
     "update:domain": "npm update @kiwihr/kiwi-domain"
   },
+  "repository": {
+    "type": "git",
+    "url": "[https://github.com/shadykoura/final_udacity_project/tree/circleci-editor/856/deploy]"
+  },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^6.11.11",
