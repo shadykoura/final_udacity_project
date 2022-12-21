@@ -311,9 +311,8 @@ jobs:
           command: |
                  apk add --update --no-cache tar gzip nodejs npm  ansible 
                  npm install
-                 
       - run:
-          name: Deploy backend
+          name: building the backend
           command: |
                 cd backend
                 npm i
@@ -322,8 +321,11 @@ jobs:
                 cp ../package.json .
                 zip -rq dist.zip *
                 mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
-                mv dist.zip ~/project/.circleci/ansible/roles/deploy/files/
-                tar -C backend -czvf artifact.tar.gz .
+                mv dist.zip ~/project/.circleci/ansible/roles/deploy/files/        
+                tar -C backend -czvf artifact.tar.gz .   
+      - run:
+          name: Deploy the backend
+          command: |
                 cd .circleci/ansible
                 echo "Contents  of the inventory.txt file is -------"
                 cat ~/project/.circleci/ansible/inventory.txt
