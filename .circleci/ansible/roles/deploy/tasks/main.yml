@@ -20,20 +20,20 @@
    # state: latest
     #update_cache: yes
 
-#- name: "install pm2"
- # npm:
-  #  name: pm2
-   # global: yes
-    #production: yes
-    #state: present
+- name: "install pm2"
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
 
 
 
 
-#- name: "Install dependencies for project"
- # shell: |
-  #  cd ~/backend_app_dir
-   # npm install
+- name: "Install dependencies for project"
+  shell: |
+    cd /home/ubuntu/backend_app_dir
+    npm install
 
 
 #- name: "Creates backend app directory"
