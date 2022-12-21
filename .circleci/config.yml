@@ -329,6 +329,7 @@ jobs:
       - run:
           name: Deploy the backend
           command: |
+                ls ~/project/.circleci/ansible/roles/deploy/files/
                 cd backend
                 ansible-galaxy install weareinteractive.environment
                 cd ~/project/.circleci/ansible
