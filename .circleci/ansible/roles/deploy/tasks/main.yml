@@ -1,74 +1,74 @@
-- name: "update apt packages."
-  apt:
-    update_cache: yes
+#- name: "update apt packages."
+ # apt:
+  #  update_cache: yes
 
-- name: "upgrade packages"
-  apt:
-    upgrade: yes
+#- name: "upgrade packages"
+ # apt:
+  #  upgrade: yes
 
-- name: remove dependencies that are no longer required
-  apt:
-    autoremove: yes
+#- name: remove dependencies that are no longer required
+ # apt:
+  #  autoremove: yes
 
-- name: install node
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
+#- name: install node
+ # shell: |
+  #  curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
 
-- name: "Install zip utility."
-  apt:
-    name: [ "zip", "unzip" ]
-    state: latest
-    update_cache: yes
+#- name: "Install zip utility."
+ # apt:
+  #  name: [ "zip", "unzip" ]
+   # state: latest
+    #update_cache: yes
 
-- name: "install pm2"
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-
-
-
-- name: "Install dependencies for project"
-  shell: |
-    cd ~/backend_app_dir
-    npm install
-
-
-- name: "Creates backend app directory"
-  file:
-    path: /home/ubuntu/backend_app_dir
-    state: directory
-    
-- name: "Copy compiled backend app"
-  copy:
-    src: "dist.zip"
-    dest: "/home/ubuntu/backend_app_dir/"
+#- name: "install pm2"
+ # npm:
+  #  name: pm2
+   # global: yes
+    #production: yes
+    #state: present
 
 
 
 
-#- name: "Unzip backend files to correct directory"
+#- name: "Install dependencies for project"
  # shell: |
   #  cd ~/backend_app_dir
-   # unzip dist.zip
-    #rm -rf dist.zip
+   # npm install
+
+
+#- name: "Creates backend app directory"
+  #file:
+   # path: /home/ubuntu/backend_app_dir
+    #state: directory
+    
+#- name: "Copy compiled backend app"
+  #copy:
+   # src: "dist.zip"
+    #dest: "/home/ubuntu/backend_app_dir/"
+
+
+
+
+- name: "Unzip backend files to correct directory"
+  shell: |
+    cd /home/ubuntu/backend_app_dir/
+    unzip dist.zip
+    rm -rf dist.zip
 
 
     
   
-#- name: "Executing node"
- # shell: |
-  #  npm i -g pm2
-   # pm2 start ~/backend_app_dir/dist/main.js -f
-  #register: execute_node
+- name: "Executing node"
+  shell: |
+    npm i -g pm2
+    pm2 start ~/backend_app_dir/dist/main.js -f
+  register: execute_node
   
   
-#- name: print message
- # debug:
-  #  msg: "{{ execute_node.stdout_lines }}"
+- name: print message
+  debug:
+    msg: "{{ execute_node.stdout_lines }}"
 
-#- name: "Configure pm2 to start as service"
- # shell: |
-  #  env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+- name: "Configure pm2 to start as service"
+  shell: |
+    env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
