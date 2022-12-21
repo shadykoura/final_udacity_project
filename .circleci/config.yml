@@ -40,7 +40,8 @@ jobs:
           command: |
             cd frontend
             npm install
-           # npm run build
+            npm audit fix
+            npm run build
       - slack/notify:
           event: fail
       - save_cache:
@@ -59,7 +60,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix`
+            npm audit fix
             npm run build             
       - save_cache:
           paths: [backend/node_modules]
