@@ -1,11 +1,12 @@
+- name: Install Python
+  raw: apt -y update && apt install -y python-minimal
+  when: user_sdf_exist is succeeded
+  
 - name: "update apt packages."
   become: yes
   apt:
     update_cache: yes
 
-- name: Install Python
-  raw: apt -y update && apt install -y python-minimal
-  when: user_sdf_exist is succeeded
 
 - name: "upgrade packages"
   become: yes
