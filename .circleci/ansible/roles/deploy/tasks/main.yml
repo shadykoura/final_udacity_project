@@ -14,21 +14,18 @@
  # shell: |
   #  curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
 
-#- name: "Install zip utility."
- # apt:
-  #  name: [ "zip", "unzip" ]
-   # state: latest
-    #update_cache: yes
+- name: "Install zip utility."
+  apt:
+    name: [ "zip", "unzip" ]
+    state: latest
+    update_cache: yes
 
-- name: "install pm2"
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-
-
+#- name: "install pm2"
+ # npm:
+  #  name: pm2
+   # global: yes
+    #production: yes
+    #state: present
 
 - name: "Install dependencies for project"
   shell: |
@@ -36,24 +33,24 @@
     npm install
 
 
-#- name: "Creates backend app directory"
-  #file:
-   # path: /home/ubuntu/backend_app_dir
-    #state: directory
+- name: "Creates backend app directory"
+  file:
+    path: /home/ubuntu/backend_app_dir
+    state: directory
     
-#- name: "Copy compiled backend app"
-  #copy:
-   # src: "dist.zip"
-    #dest: "/home/ubuntu/backend_app_dir/"
+- name: "Copy compiled backend app"
+  copy:
+    src: "dist.zip"
+    dest: "/home/ubuntu/backend_app_dir/"
 
 
 
 
-#- name: "Unzip backend files to correct directory"
- # shell: |
-  #  cd /home/ubuntu/backend_app_dir/
-   # unzip dist.zip
-    #rm -rf dist.zip
+- name: "Unzip backend files to correct directory"
+  shell: |
+    cd /home/ubuntu/backend_app_dir/
+    unzip dist.zip
+    rm -rf dist.zip
 
 
     
