@@ -330,7 +330,7 @@ jobs:
           command: |
                 cd backend
                 ansible-galaxy install weareinteractive.environment
-                cd .circleci/ansible
+                cd ~/project/.circleci/ansible
                 echo "Contents  of the inventory.txt file is -------"
                 cat ~/project/.circleci/ansible/inventory.txt
                 ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
