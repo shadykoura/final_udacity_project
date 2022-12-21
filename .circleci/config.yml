@@ -318,6 +318,7 @@ jobs:
                 npm i
                 npm run build
                 cd dist
+                ls
                 cp ../package.json .
                 zip -rq dist.zip *
                 mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
