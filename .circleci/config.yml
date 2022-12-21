@@ -208,7 +208,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            sudo apt-get update && sudo apt-get install -y awscli
+            apk add --no-cache aws-cli
+#            sudo apt-get update && sudo apt-get install -y awscli
       #- run: yum install -y tar gzip
       - run:
           name: Configure server
