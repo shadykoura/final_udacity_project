@@ -208,7 +208,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            apk add --no-cache aws-cli
+          #  apk add --no-cache aws-cli
 #            sudo apt-get update && sudo apt-get install -y awscli
       #- run: yum install -y tar gzip
       - run:
