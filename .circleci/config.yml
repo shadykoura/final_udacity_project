@@ -318,12 +318,16 @@ jobs:
                 cd backend
                 npm i
                 npm run build
-                cd ..
+                cd dist
+                cp ../package.json .
+                zip -rq dist.zip *
+                mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
+                mv dist.zip ~/project/.circleci/ansible/roles/deploy/files/
                 tar -C backend -czvf artifact.tar.gz .
                 cd .circleci/ansible
                 echo "Contents  of the inventory.txt file is -------"
                 cat ~/project/.circleci/ansible/inventory.txt
-                ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
+                ansible-playbook -i ~/project/.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       
       - destroy_environment 
       # Here's where you will add some code to rollback on failure  
