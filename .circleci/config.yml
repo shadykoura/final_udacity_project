@@ -2,28 +2,21 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.12.0
 commands: 
-   destroy_backend:
+   destroy_environment:
      steps:
        - run:
-           name: Destroy backend
+           name: Destroy ENV
            # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
            # ${CIRCLE_WORKFLOW_ID:0:5} takes the first 5 chars of the variable CIRCLE_CI_WORKFLOW_ID 
            when: on_fail
            command: |
                aws cloudformation delete-stack \
-               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-               --region us-east-1
-   destroy_frontend:
-      steps:
-       - run:
-           name: Destroy frontend
-           # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
-           # ${CIRCLE_WORKFLOW_ID:0:5} takes the first 5 chars of the variable CIRCLE_CI_WORKFLOW_ID 
-           when: on_fail
-           command: |
+                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --region us-east-1
+               
                aws cloudformation delete-stack \
-               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"\
-               --region us-east-1
+                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"\
+                --region us-east-1
 
 
 
@@ -191,8 +184,8 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-       - destroy_frontend
-       - destroy_backend   
+       
+       - destroy_environment   
  
 
       # Here's where you will add some code to rollback on failure      
@@ -215,13 +208,14 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            sudo apt-get update && sudo apt-get install -y awscli
       #- run: yum install -y tar gzip
       - run:
           name: Configure server
           command: |
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt -vvv .circleci/ansible/configure-server.yml ##--private-key udacity.pem
-      - destroy_frontend
-      - destroy_backend  
+      
+      - destroy_environment  
       # Here's where you will add some code to rollback on failure      
   run-migrations:
     docker:
@@ -249,8 +243,8 @@ jobs:
                    sudo curl -k https://kvdb.io/H1MQiuLgR9fHB5N6A6k88q/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'   
 
                fi
-     # - destroy_frontend
-     # - destroy_backend 
+     # 
+     # - destroy_environment 
 
                 # Here's where you will add some code to rollback on failure      
   deploy-frontend:
@@ -298,8 +292,8 @@ jobs:
                  aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive --region us-east-1
                  
                     # your code here 
-          - destroy_frontend
-          - destroy_backend 
+          
+          - destroy_environment 
   deploy-backend:
     docker:
        - image: python:3.7-alpine3.11
@@ -329,14 +323,14 @@ jobs:
                 echo "Contents  of the inventory.txt file is -------"
                 cat ~/project/.circleci/ansible/inventory.txt
                # ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
-      - destroy_frontend
-      - destroy_backend 
+      
+      - destroy_environment 
       # Here's where you will add some code to rollback on failure  
 
 workflows:
   default:
     jobs:
-      - build-frontend
+     # - build-frontend
          #filters:
             #branches:
              # only: [dev]
