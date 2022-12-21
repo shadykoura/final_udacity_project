@@ -19,6 +19,11 @@
     cd ~/backend_app_dir
     npm install
     
+- name: Install PM2
+  npm:
+    name: pm2
+    global: yes
+    
 - name: "Executing node"
   shell: |
     npm i -g pm2
