@@ -31,6 +31,6 @@
 
 - name: Install Python
   raw: apt -y update && apt install -y python-minimal
-  when: check_python.rc != 0
+  when: user_sdf_exist is succeeded
 
 
