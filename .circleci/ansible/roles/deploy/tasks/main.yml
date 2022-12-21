@@ -19,6 +19,11 @@
     name: [ "zip", "unzip" ]
     state: latest
     update_cache: yes
+
+- name: "Creates backend app directory"
+  file:
+    path: ~/backend_app_dir
+    state: directory
     
 - name: "Copy compiled backend app"
   copy:
@@ -37,10 +42,7 @@
    # global: yes
     #production: yes
     #state: present
-#- name: "Creates backend app directory"
- # file:
-  #  path: ~/backend_app_dir
-   # state: directory
+
 
 
 
