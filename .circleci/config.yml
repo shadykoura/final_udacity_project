@@ -322,7 +322,8 @@ jobs:
                 zip -rq dist.zip *
                 mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
                 mv dist.zip ~/project/.circleci/ansible/roles/deploy/files/
-                cd ..     
+                cd ..
+                cd ..
                 tar -C backend -czvf artifact.tar.gz .   
       - run:
           name: Deploy the backend
