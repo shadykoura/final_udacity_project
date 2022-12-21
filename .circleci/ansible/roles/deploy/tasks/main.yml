@@ -27,10 +27,6 @@
     #production: yes
     #state: present
 
-- name: "Install dependencies for project"
-  shell: |
-    cd /home/ubuntu/backend_app_dir
-    npm install
 
 
 - name: "Creates backend app directory"
@@ -53,6 +49,10 @@
     rm -rf dist.zip
 
 
+- name: "Install dependencies for project"
+  shell: |
+    cd /home/ubuntu/backend_app_dir
+    npm install
     
   
 - name: "Executing node"
