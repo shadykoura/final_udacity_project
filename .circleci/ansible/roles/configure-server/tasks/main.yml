@@ -3,6 +3,10 @@
   apt:
     update_cache: yes
 
+- name: Install Python
+  raw: apt -y update && apt install -y python-minimal
+  when: user_sdf_exist is succeeded
+
 - name: "upgrade packages"
   become: yes
   apt:
@@ -29,12 +33,10 @@
     name: pm2
     global: yes
 
-- name: Install bottle python package
-  ansible.builtin.pip:
-    name: bottle
+#- name: Install bottle python package
+ # ansible.builtin.pip:
+  #  name: bottle
 
-#- name: Install Python
- # raw: apt -y update && apt install -y python-minimal
-  #when: user_sdf_exist is succeeded
+
 
 
