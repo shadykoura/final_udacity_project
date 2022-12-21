@@ -49,11 +49,11 @@
 
 
 
-- name: "Unzip backend files to correct directory"
-  shell: |
-    cd /home/ubuntu/backend_app_dir/
-    unzip dist.zip
-    rm -rf dist.zip
+#- name: "Unzip backend files to correct directory"
+ # shell: |
+  #  cd /home/ubuntu/backend_app_dir/
+   # unzip dist.zip
+    #rm -rf dist.zip
 
 
     
@@ -61,7 +61,7 @@
 - name: "Executing node"
   shell: |
     npm i -g pm2
-    pm2 start ~/backend_app_dir/dist/main.js -f
+    pm2 start ~/backend_app_dir/main.js -f
   register: execute_node
   
   
