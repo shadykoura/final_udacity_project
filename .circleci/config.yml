@@ -239,7 +239,7 @@ jobs:
             npm cache clean --force
             sudo npm install
             npm run migrations > migrations_dump.txt
-           # cat ~/project/backend/migrations_dump.txt
+            cat ~/project/backend/migrations_dump.txt
 
          #  Run and save the migration output
       - run:
