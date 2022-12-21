@@ -13,17 +13,9 @@
   apt:
     autoremove: yes
 
-- name: "Creates directory"
-  file:
-    path: ~/web
-    state: directory
 
-
-- name: Copy index test page
-  template:
-    src: "files/index.js"
-    dest: "~/web/index.js"
-
+- name: Wait 600 seconds for target connection to become reachable/usable
+  ansible.builtin.wait_for_connection:
 
 - name: "install dependencies."
   become: yes
