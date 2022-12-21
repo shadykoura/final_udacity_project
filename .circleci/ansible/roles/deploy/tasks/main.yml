@@ -38,13 +38,13 @@
 
 - name: "Creates backend app directory"
   file:
-    path: ~/backend_app_dir
+    path: /home/ubuntu/backend_app_dir
     state: directory
     
 - name: "Copy compiled backend app"
   copy:
     src: "dist.zip"
-    dest: "~/backend_app_dir/"
+    dest: "/home/ubuntu/backend_app_dir/"
 
 
 
