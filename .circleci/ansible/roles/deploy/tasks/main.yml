@@ -1,24 +1,40 @@
-#- name: "update apt packages."
- # apt:
-  #  update_cache: yes
+- name: "update apt packages."
+  apt:
+    update_cache: yes
 
-#- name: "upgrade packages"
- # apt:
-  #  upgrade: yes
+- name: "upgrade packages"
+  apt:
+    upgrade: yes
 
-#- name: remove dependencies that are no longer required
- # apt:
-  #  autoremove: yes
+- name: remove dependencies that are no longer required
+  apt:
+    autoremove: yes
 
-#- name: install node
- # shell: |
-  #  curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
+- name: install node
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
 
-#- name: "Install zip utility."
- # apt:
-  #  name: [ "zip", "unzip" ]
-   # state: latest
-    #update_cache: yes
+- name: "Install zip utility."
+  apt:
+    name: [ "zip", "unzip" ]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+
+
+
+- name: "Install dependencies for project"
+  shell: |
+    cd ~/backend_app_dir
+    npm install
+
 
 - name: "Creates backend app directory"
   file:
@@ -30,26 +46,16 @@
     src: "dist.zip"
     dest: "~/backend_app_dir/"
 
+
+
+
 #- name: "Unzip backend files to correct directory"
  # shell: |
   #  cd ~/backend_app_dir
    # unzip dist.zip
     #rm -rf dist.zip
 
-#- name: "install pm2"
- # npm:
-  #  name: pm2
-   # global: yes
-    #production: yes
-    #state: present
 
-
-
-
-- name: "Install dependencies for project"
-  shell: |
-    cd ~/backend_app_dir
-    npm install
     
   
 #- name: "Executing node"
