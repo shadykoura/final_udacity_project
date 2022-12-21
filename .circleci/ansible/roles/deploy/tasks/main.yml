@@ -1,18 +1,18 @@
-- name: "update apt packages."
-  apt:
-    update_cache: yes
+#- name: "update apt packages."
+ # apt:
+  #  update_cache: yes
 
-- name: "upgrade packages"
-  apt:
-    upgrade: yes
+#- name: "upgrade packages"
+ # apt:
+  #  upgrade: yes
 
 #- name: remove dependencies that are no longer required
  # apt:
   #  autoremove: yes
 
-- name: install node
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
+#- name: install node
+ # shell: |
+  #  curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
 
 - name: "Install zip utility."
   apt:
@@ -22,25 +22,25 @@
     
 - name: "Copy compiled backend app"
   copy:
-    src: ~/project/.circleci/ansible/roles/deploy/files/dist.zip
-    dest: "~/backend_app_dir/dist.zip"
+    src: "files/dist.zip"
+    dest: "~/backend_app_dir/"
 
-- name: "Unzip backend files to correct directory"
-  shell: |
-    cd ~/backend_app_dir
-    unzip dist.zip
-    rm -rf dist.zip
+#- name: "Unzip backend files to correct directory"
+ # shell: |
+  #  cd ~/backend_app_dir
+   # unzip dist.zip
+    #rm -rf dist.zip
 
-- name: "install pm2"
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-- name: "Creates backend app directory"
-  file:
-    path: ~/backend_app_dir
-    state: directory
+#- name: "install pm2"
+ # npm:
+  #  name: pm2
+   # global: yes
+    #production: yes
+    #state: present
+#- name: "Creates backend app directory"
+ # file:
+  #  path: ~/backend_app_dir
+   # state: directory
 
 
 
@@ -50,17 +50,17 @@
     npm install
     
   
-- name: "Executing node"
-  shell: |
-    npm i -g pm2
-    pm2 start ~/backend_app_dir/dist/main.js -f
-  register: execute_node
+#- name: "Executing node"
+ # shell: |
+  #  npm i -g pm2
+   # pm2 start ~/backend_app_dir/dist/main.js -f
+  #register: execute_node
   
   
-- name: print message
-  debug:
-    msg: "{{ execute_node.stdout_lines }}"
+#- name: print message
+ # debug:
+  #  msg: "{{ execute_node.stdout_lines }}"
 
-- name: "Configure pm2 to start as service"
-  shell: |
-    env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+#- name: "Configure pm2 to start as service"
+ # shell: |
+  #  env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
