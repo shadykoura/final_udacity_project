@@ -1,16 +1,27 @@
-- name: Extract artifact.tar.gz into /home/ubunto/artifact
-  ansible.builtin.unarchive:
-    src: artifact.tar.gz
-    dest: /home/ubunto
-    
-- name: Install dependencies
-  npm:
-    path: /home/ubunto/package
+- name: Creates directory
+  file:
+    path: /home/ubuntu/backend
+    state: directory
 
-- name: Start the application
-  command:
-        chdir: /home/ubunto/package/app
-        cmd: node server
-  async: 1000
-  poll: 0
-    
+- name: Copy artifact.tar.gz file
+  template:
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/backend
+
+- name: Uncompress Backend
+  shell: |
+    cd /home/ubuntu/backend
+    tar xvzf artifact.tar.gz -C .
+    ls -la
+
+- name: Build
+  become: true
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+    npm run build
+
+- name: Start PM2
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm --name backend -- start
