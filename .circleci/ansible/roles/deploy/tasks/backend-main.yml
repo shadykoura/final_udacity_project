@@ -1,0 +1,16 @@
+- name: Extract artifact.tar.gz into /home/ubunto/artifact
+  ansible.builtin.unarchive:
+    src: artifact.tar.gz
+    dest: /home/ubunto
+    
+- name: Install dependencies
+  npm:
+    path: /home/ubunto/package
+
+- name: Start the application
+  command:
+        chdir: /home/ubunto/package/app
+        cmd: node server
+  async: 1000
+  poll: 0
+    
