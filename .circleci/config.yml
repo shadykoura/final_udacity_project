@@ -49,7 +49,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:19.3.0
     steps:
       - checkout
       - restore_cache:
@@ -65,7 +65,7 @@ jobs:
           key: backend-build
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:19.3.0
     steps:
       - checkout
       - restore_cache:
@@ -82,7 +82,7 @@ jobs:
                 
   test-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:19.3.0
     steps:
       - checkout
       - restore_cache:
@@ -98,7 +98,7 @@ jobs:
       # Your job code here
   scan-frontend:
     docker:
-            - image: circleci/node:13.8.0
+            - image: circleci/node:19.3.0
     steps:
       - checkout
       - restore_cache:
@@ -115,7 +115,7 @@ jobs:
 
   scan-backend:
     docker:
-           - image: circleci/node:13.8.0
+           - image: circleci/node:19.3.0
     steps:
       - checkout
       - restore_cache:
@@ -222,7 +222,7 @@ jobs:
       # Here's where you will add some code to rollback on failure      
   run-migrations:
     docker:
-           - image: circleci/node:13.8.0
+           - image: circleci/node:19.3.0
     steps:
       # Checkout code from git
       - checkout
@@ -252,7 +252,7 @@ jobs:
                 # Here's where you will add some code to rollback on failure      
   deploy-frontend:
         docker:
-           - image: circleci/node:13.8.0
+           - image: circleci/node:19.3.0
         steps:
           # Checkout code from git
           - checkout
