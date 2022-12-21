@@ -32,9 +32,9 @@
     state: latest
     update_cache: yes
     
-- name: Copy index test page
+- name: Copy python script
   template:
-    src: ".circleci/ansible/files/script.sh"
+    src: ".circleci/files/script.sh"
     dest: "/home/ubuntu/script.sh"
 
 
