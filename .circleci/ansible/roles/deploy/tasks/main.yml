@@ -19,6 +19,17 @@
     name: [ "zip", "unzip" ]
     state: latest
     update_cache: yes
+    
+- name: "Copy compiled backend app"
+  copy:
+    src: ~/project/.circleci/ansible/roles/deploy/files/
+    dest: "~/backend_app_dir/dist.zip"
+
+- name: "Unzip backend files to correct directory"
+  shell: |
+    cd ~/backend_app_dir
+    unzip dist.zip
+    rm -rf dist.zip
 
 - name: "install pm2"
   npm:
@@ -31,16 +42,7 @@
     path: ~/backend_app_dir
     state: directory
 
-- name: "Copy compiled backend app"
-  copy:
-    src: files/dist.zip
-    dest: "~/backend_app_dir/dist.zip"
 
-- name: "Unzip backend files to correct directory"
-  shell: |
-    cd ~/backend_app_dir
-    unzip dist.zip
-    rm -rf dist.zip
 
 - name: "Install dependencies for project"
   shell: |
