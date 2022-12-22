@@ -16,6 +16,7 @@
     - TYPEORM_PORT: 5432
     - NODE_ENV: production
     - ENVIRONMENT: production
+    - VERSION: 1
     - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
     - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
     - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
@@ -23,4 +24,6 @@
     - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
   
   roles:
-    - deploy
+    - role: deploy
+    - role: weareinteractive.environment
+      become: true
