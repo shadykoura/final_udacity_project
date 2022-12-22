@@ -1,47 +1,42 @@
-#- name: Install Python
- # raw: apt -y update && apt install -y python-minimal
-  #when: user_sdf_exist is succeeded
-  
-- name: "update apt packages."
-  become: yes
+---
+- name: "install python3."
+  become: true
   apt:
-    update_cache: yes
-
+    name: ["python3"]
+    state: latest
+    update_cache: true
 
 - name: "upgrade packages"
-  become: yes
+  become: true
   apt:
-    upgrade: yes
+    upgrade: true
 
-#- name: "remove dependencies that are no longer required"
- # become: yes
-  #apt:
-   # autoremove: yes
-
-
-- name: Wait 600 seconds for target connection to become reachable/usable
-  ansible.builtin.wait_for_connection:
+- name: remove dependencies that are no longer required
+  become: true
+  apt:
+    autoremove: true
 
 - name: "install dependencies."
-  become: yes
+  become: true
   apt:
-    name: ["nodejs", "npm" ]
+    name: ["nodejs", "npm"]
     state: latest
-    update_cache: yes
-    
-- name: install node
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
-    
-- name: Install PM2
+
+- name: "install n (node version manager)"
+  become: true
+  npm:
+    name: n
+    global: true
+    production: true
+
+- name: "switch to node v13.8.0"
+  become: true
+  shell: n 13.8.0
+  
+- name: "install pm2"
+  become: true
   npm:
     name: pm2
-    global: yes
-
-#- name: Install bottle python package
- # ansible.builtin.pip:
-  #  name: bottle
-
-
-
-
+    global: true
+    production: true
+    state: present
