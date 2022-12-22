@@ -67,21 +67,27 @@
     #state: present
 
 - name: "create project dir"
-  shell: mkdir ~/backend
+  shell: mkdir ~/backend2
 
 - name: "send build atrifacts to remote"
   unarchive:
     src: ../../artifact.tar.gz
-    dest: ~/backend
+    dest: ~/backend2
 
 - name: "install backend artifacts"
   npm:
-    path: ~/backend
+    path: ~/backend2
     production: true
     global: true
+    
+- name: "Install dependencies for project"
+  shell: |
+    cd ~/backend2
+    npm install
+    
 
 - name: "start the app"
-  shell: cd ~/backend && pm2 stop all; pm2 start npm -- run start
+  shell: cd ~/backend2 && pm2 stop all; pm2 start npm -- run start
 
  
  
