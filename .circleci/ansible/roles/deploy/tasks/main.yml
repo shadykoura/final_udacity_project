@@ -66,30 +66,23 @@
     #production: true
     #state: present
 
+- name: "create project dir"
+  shell: mkdir ~/backend
 
-- name: "Creates backend app directory"
-  file:
-    path: /home/ubuntu/backend_app_dir
-    state: directory
-    
-- name: "copy build artifact to ec2 app"
+- name: "send build atrifacts to remote"
   unarchive:
     src: ../../artifact.tar.gz
-    dest: /home/ubuntu/backend_app_dir/
+    dest: ~/backend
 
-- name: "install artifact"
-  npm: 
-    path: /home/ubuntu/backend_app_dir/
-    global: true
+- name: "install backend artifacts"
+  npm:
+    path: ~/backend
     production: true
-  
-  
-  
-- name: "Executing node"
-  shell: |
-    cd /home/ubuntu/backend_app_dir/
-    sudo pm2 stop all 
-    sudo pm2 start npm -- run -- start
+    global: true
+
+- name: "start the app"
+  shell: cd ~/backend && pm2 stop all; pm2 start npm -- run start
+
  
  
  # pm2 start /home/ubuntu/backend_app_dir/main.js -f
