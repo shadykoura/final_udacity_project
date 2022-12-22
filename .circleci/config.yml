@@ -3,6 +3,27 @@ orbs:
   slack: circleci/slack@4.12.0
 commands: 
    #revert-migrations:
+   revert-migrations:
+            description: Revert the last migration
+            parameters:
+                workflow_id:
+                    type: string      
+            steps:
+                - run:
+                    name: Revert migrations
+                    when: on_fail
+                    command: |
+                      
+                      #  SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_<< parameters.workflow_id >>)
+                      
+                        # Logic for reverting the database state
+                       # if (( $SUCCESS == 1 ));
+                        #then
+                            cd ~/project/backend
+                            npm install
+                            npm run migration:revert
+                        #fi                # Here's where you will add some code to rollback on failure
+   
    destroy_environment:
      steps:
        - run:
@@ -230,7 +251,15 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-          
+
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            sudo apt-get update && sudo apt-get install -y awscli
+            npm cache clean --force
+            npm run migration:revert
+
       - run:
           name: Run migrations
           command: |
@@ -255,7 +284,7 @@ jobs:
      # 
      # - destroy_environment 
 
-                # Here's where you will add some code to rollback on failure      
+        
   deploy-frontend:
         docker:
            - image: cimg/node:13.8.0
