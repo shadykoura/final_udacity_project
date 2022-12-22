@@ -418,7 +418,7 @@ jobs:
               if curl -s ${URL} | grep "Welcome"
               then
                   # Change this to 0 after the job fails
-                return 1
+                return 0
               else
                 return 1
               fi
@@ -440,7 +440,7 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name imitial-stack \
+            --stack-name cloudfront-initial-stack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople \
             --region us-east-1
@@ -482,6 +482,53 @@ jobs:
 workflows:
   default:
     jobs:
-
-      - cleanup
-     #     requires: [cloudfront-update]
+     # - build-frontend
+         #filters:
+            #branches:
+             # only: [dev]
+      #- build-backend
+          #filters:
+            #branches:
+           #   only: [dev]
+      #- test-frontend:
+       #   requires: [build-frontend]
+          #filters:
+           # branches:
+            #  only: [dev]          
+      #- test-backend:
+        #  requires: [build-backend]
+          #filters:
+            #branches:
+           #   only: [dev]
+      #- scan-backend:
+       #   requires: [build-backend]
+          #filters:
+            #branches:
+           #   only: [dev]          
+      #- scan-frontend:
+       #   requires: [build-frontend]
+          #filters:
+            #branches:
+             # only: [dev]
+      - deploy-infrastructure 
+          #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          #filters:
+           # branches:
+            #  only: [test-feature-branch]
+   #   - configure-infrastructure:
+    #      requires: 
+     #        - deploy-infrastructure 
+      - run-migrations:
+          requires: [deploy-infrastructure]
+        #configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      #- deploy-backend:
+       #  requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-frontend] 
+          #[deploy-backend, [deploy-frontend] 
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
