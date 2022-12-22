@@ -378,7 +378,7 @@ jobs:
                 ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
                    #   ansible-galaxy install weareinteractive.environment #
 
-      - destroy_environment 
+    #  - destroy_environment 
       # Here's where you will add some code to rollback on failure  
   smoke-test:
     docker:
