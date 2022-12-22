@@ -440,11 +440,12 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name cloudfront-stack \
+            --stack-name myinitial-stack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople \
             --region us-east-1 
-            
+      - destroy_environment   
+      - revert-migrations           
       # Here's where you will add some code to rollback on failure  
   cleanup:
     docker:
