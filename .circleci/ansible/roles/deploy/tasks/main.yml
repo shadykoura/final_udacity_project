@@ -34,8 +34,8 @@
     
 - name: "send build artifact to ec2 app"
   unarchive:
-    src: "artifact.tar.gz"
-    dest: "/home/ubuntu/backend_app_dir/"
+    src: ../../artifact.tar.gz
+    dest: /home/ubuntu/backend_app_dir/
 
 - name: "install artifact"
   npm: 
