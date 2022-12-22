@@ -440,7 +440,7 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name cloudfront-initial-stack \
+            --stack-name cloudfront-stack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople \
             --region us-east-1
