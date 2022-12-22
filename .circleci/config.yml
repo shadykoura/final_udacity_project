@@ -15,14 +15,15 @@ commands:
                     command: |
                       
                       #  SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_<< parameters.workflow_id >>)
+                        SUCCESS=$(curl --insecure  https://kvdb.io/H1MQiuLgR9fHB5N6A6k88q/migration_${CIRCLE_WORKFLOW_ID:0:7})
                       
                         # Logic for reverting the database state
-                       # if (( $SUCCESS == 1 ));
-                        #then
+                        if (( $SUCCESS == 1 ));
+                        then
                             cd ~/project/backend
                             npm install
                             npm run migration:revert
-                        #fi                # Here's where you will add some code to rollback on failure
+                        fi                # Here's where you will add some code to rollback on failure
    
    destroy_environment:
      steps:
@@ -232,6 +233,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            pip install awscli
           #  apk add --no-cache aws-cli
 #            sudo apt-get update && sudo apt-get install -y awscli
       #- run: yum install -y tar gzip
@@ -283,7 +285,7 @@ jobs:
 
                fi
      # 
-     # - destroy_environment 
+      - destroy_environment 
 
         
   deploy-frontend:
@@ -348,6 +350,7 @@ jobs:
           name: Install dependencies
           command: |
                  apk add --update --no-cache tar gzip nodejs npm  ansible zip
+                 pip install awscli
                  npm install
       - run:
           name: building the backend
