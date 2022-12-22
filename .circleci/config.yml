@@ -452,7 +452,7 @@ jobs:
 
                     export OldWorkflowID=$(aws cloudformation \
                     list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                    --no-paginate --output text)
+                    --region us-east-1 --no-paginate --output text)
                 
                     echo OldWorkflowID "${OldWorkflowID}"
                   
@@ -478,6 +478,6 @@ jobs:
 workflows:
   default:
     jobs:
-
+   
       - cleanup
        #   requires: [cloudfront-update]
