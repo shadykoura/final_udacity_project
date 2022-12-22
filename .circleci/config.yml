@@ -211,8 +211,7 @@ jobs:
             - project/.circleci/ansible/inventory.txt
        
        - destroy_environment   
- 
-
+       
       # Here's where you will add some code to rollback on failure      
   configure-infrastructure:
     docker:
@@ -367,17 +366,18 @@ jobs:
                 cd ..
                 cd ..
                 tar -C backend -czvf artifact.tar.gz .   
+                mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
       - run:
           name: Deploy the backend
           command: |
                 ls ~/project/.circleci/ansible/roles/deploy/files/
                 cd backend
-                ansible-galaxy install weareinteractive.environment
                 cd ~/project/.circleci/ansible
                 echo "Contents  of the inventory.txt file is -------"
                 cat ~/project/.circleci/ansible/inventory.txt
                 ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
-      
+                   #   ansible-galaxy install weareinteractive.environment #
+
       - destroy_environment 
       # Here's where you will add some code to rollback on failure  
   smoke-test:
@@ -421,6 +421,60 @@ jobs:
               fi
 
       # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+         - image: amazon/aws-cli
+    steps:
+      - checkout
+      #- run:
+       #   name: Install dependencies
+        #  command: |
+            # your code here
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name imitial-stack \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --tags project=udapeople \
+            --region us-east-1
+            
+      # Here's where you will add some code to rollback on failure  
+  cleanup:
+    docker:
+         - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Get old stack workflow id
+          command: |
+
+                    export OldWorkflowID=$(aws cloudformation \
+                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                    --no-paginate --output text)
+                  
+                    echo OldWorkflowID "${OldWorkflowID}"
+                  
+                    echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+                    # Fetch the stack names          
+                    export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+                    echo Stack names  "${STACKS[@]}
+
+      - run:
+          name: Remove old stacks and files
+          command: |
+            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
+            then
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+
+            fi
+            
+
 workflows:
   default:
     jobs:
@@ -452,24 +506,23 @@ workflows:
           #filters:
             #branches:
              # only: [dev]
-     # - deploy-infrastructure
+      - deploy-infrastructure
           #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           #filters:
            # branches:
             #  only: [test-feature-branch]
-     # - configure-infrastructure:
-        #  requires: 
-         #    - deploy-infrastructure 
-     # - run-migrations
-      #    requires: [configure-infrastructure]
-     # - deploy-frontend:
-      #    requires: [run-migrations]
-      - deploy-backend
-      #   requires: [run-migrations]
-      #- smoke-test:
-       #   requires: [deploy-backend]
-          #, deploy-frontend] 
-      #- cloudfront-update:
-       #   requires: [smoke-test]
-      #- cleanup:
-        #  requires: [cloudfront-update]
+      - configure-infrastructure:
+          requires: 
+             - deploy-infrastructure 
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+         requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend] 
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
