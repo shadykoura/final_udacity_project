@@ -1,18 +1,18 @@
-- name: "update apt packages."
-  apt:
-    update_cache: yes
+#- name: "update apt packages."
+ # apt:
+  #  update_cache: yes
 
-- name: "upgrade packages"
-  apt:
-    upgrade: yes
+#- name: "upgrade packages"
+ # apt:
+  #  upgrade: yes
 
 #- name: remove dependencies that are no longer required
  # apt:
   #  autoremove: yes
 
-- name: install node
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && sudo apt-get install -y nodejs
+#- name: install node
+ # shell: |
+  #  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && sudo apt-get install -y nodejs
 
 #- name: "Install zip utility."
  # apt:
@@ -20,19 +20,55 @@
    # state: latest
     #update_cache: yes
 
+- name: "install python3."
+  become: true
+  apt:
+    name: ["python3"]
+    state: latest
+    update_cache: true
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: true
+
+- name: remove dependencies that are no longer required
+  become: true
+  apt:
+    autoremove: true
+
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+
+- name: "install n (node version manager)"
+  become: true
+  npm:
+    name: n
+    global: true
+    production: true
+
+- name: "switch to node v13.8.0"
+  become: true
+  shell: n 13.8.0
+  
 - name: "install pm2"
+  become: true
   npm:
     name: pm2
-    global: yes
-    production: yes
+    global: true
+    production: true
     state: present
+
 
 - name: "Creates backend app directory"
   file:
     path: /home/ubuntu/backend_app_dir
     state: directory
     
-- name: "send build artifact to ec2 app"
+- name: "copy build artifact to ec2 app"
   unarchive:
     src: ../../artifact.tar.gz
     dest: /home/ubuntu/backend_app_dir/
@@ -48,9 +84,11 @@
 - name: "Executing node"
   shell: |
     cd /home/ubuntu/backend_app_dir/
-    pm2 stop all 
-    pm2 start npm -- run -- start
-   # pm2 start /home/ubuntu/backend_app_dir/main.js -f
+    sudo pm2 stop all 
+    sudo pm2 start npm -- run -- start
+ 
+ 
+ # pm2 start /home/ubuntu/backend_app_dir/main.js -f
  # register: execute_node
  
  
