@@ -258,7 +258,8 @@ jobs:
             cd backend
             sudo apt-get update && sudo apt-get install -y awscli
             npm cache clean --force
-            npm run migrations:revert
+            sudo npm install
+            npm run migration:revert
 
       - run:
           name: Run migrations
