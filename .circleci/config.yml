@@ -3,11 +3,7 @@ orbs:
   slack: circleci/slack@4.12.0
 commands: 
    #revert-migrations:
-   revert-migrations:
-            description: Revert the last migration
-            parameters:
-                workflow_id:
-                    type: string      
+   revert-migrations:   
             steps:
                 - run:
                     name: Revert migrations
