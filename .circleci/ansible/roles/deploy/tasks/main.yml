@@ -12,7 +12,7 @@
 
 - name: install node
   shell: |
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && sudo apt-get install -y nodejs
 
 - name: "Install zip utility."
   apt:
@@ -27,45 +27,57 @@
     production: yes
     state: present
 
-
-
 - name: "Creates backend app directory"
   file:
     path: /home/ubuntu/backend_app_dir
     state: directory
     
-- name: "Copy compiled backend app"
-  copy:
-    src: "dist.zip"
+- name: "send build artifact to ec2 app"
+  unarchive:
+    src: "artifact.tar.gz"
     dest: "/home/ubuntu/backend_app_dir/"
 
-
-
-
-- name: "Unzip backend files to correct directory"
-  shell: |
-    cd /home/ubuntu/backend_app_dir/
-    unzip dist.zip
-    rm -rf dist.zip
-
-
-- name: "Install dependencies for project"
-  shell: |
-    cd /home/ubuntu/backend_app_dir
-    npm install
-    
+- name: "install artifact"
+  npm: 
+    path: /home/ubuntu/backend_app_dir/
+    global: true
+    production: true
+  
+  
   
 - name: "Executing node"
   shell: |
-    npm i -g pm2
-    pm2 start /home/ubuntu/backend_app_dir/main.js -f
-  register: execute_node
-  
-  
-- name: print message
-  debug:
-    msg: "{{ execute_node.stdout_lines }}"
+    cd /home/ubuntu/backend_app_dir/
+    pm2 stop all 
+    pm2 start npm -- run -- start
+   # pm2 start /home/ubuntu/backend_app_dir/main.js -f
+ # register: execute_node
+ 
+ 
 
-- name: "Configure pm2 to start as service"
-  shell: |
-    env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+#- name: "Unzip backend files to correct directory"
+ # shell: |
+  #  cd /home/ubuntu/backend_app_dir/
+   # unzip dist.zip
+    #rm -rf dist.zip
+
+
+#- name: "Install dependencies for project"
+ # shell: |
+  #  cd /home/ubuntu/backend_app_dir
+   # npm install -g npm@latest
+    #npm install
+    #npm run build
+    
+  
+#- name: "Executing node"
+ # shell: |
+  #  npm i -g pm2
+   # pm2 start /home/ubuntu/backend_app_dir/main.js -f
+  #register: execute_node
+  
+  
+#- name: print message
+ # debug:
+  #  msg: "{{ execute_node.stdout_lines }}"
+
