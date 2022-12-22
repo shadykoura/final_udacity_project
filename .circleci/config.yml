@@ -398,15 +398,15 @@ jobs:
              export API_URL="http://${BACKEND_IP}:3030"
              echo "API_URL = ${API_URL}"    
     
-      - run:
-          name: Backend smoke test.
-          command: |
-             if curl "${API_URL}/api/status" | grep "ok"
-             then
-                  return 0
-             else
-                  return 1
-             fi      
+      #- run:
+       #   name: Backend smoke test.
+        #  command: |
+         #    if curl "${API_URL}/api/status" | grep "ok"
+          #   then
+           #       return 0
+            # else
+             #     return 1
+            # fi      
       - run:
           name: Frontend smoke test.
           command: |
@@ -506,23 +506,23 @@ workflows:
           #filters:
             #branches:
              # only: [dev]
-      #- deploy-infrastructure
-          #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          #filters:
+      - deploy-infrastructure
+        #  requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+         # filters:
            # branches:
             #  only: [test-feature-branch]
-      #- configure-infrastructure:
-      #    requires: 
-       #      - deploy-infrastructure 
-      #- run-migrations:
-       #   requires: [configure-infrastructure]
-      #- deploy-frontend:
-       #   requires: [run-migrations]
+      - configure-infrastructure:
+          requires: 
+             - deploy-infrastructure 
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
       - deploy-backend
         # requires: [run-migrations]
-      #- smoke-test:
-       #   requires: [deploy-backend, deploy-frontend] 
-      #- cloudfront-update:
-       #   requires: [smoke-test]
-      #- cleanup:
-       #   requires: [cloudfront-update]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend] 
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
