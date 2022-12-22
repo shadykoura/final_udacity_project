@@ -518,7 +518,7 @@ workflows:
    #   - configure-infrastructure:
     #      requires: 
      #        - deploy-infrastructure 
-      - run-migrations
+      - run-migrations:
           requires: [deploy-infrastructure]
         #configure-infrastructure]
       - deploy-frontend:
