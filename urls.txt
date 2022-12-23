@@ -1,0 +1,5 @@
+URL01 https://github.com/shadykoura/final_udacity_project
+URL02 http://udapeople-ec1acf0.s3-website-us-east-1.amazonaws.com/#/employees
+URL03 http://d1bfovw90lp423.cloudfront.net/#/employees
+URL04 http://3.86.82.253:3030/api/status
+URL05 http://ec2-54-227-232-234.compute-1.amazonaws.com:9090/graph
