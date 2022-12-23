@@ -334,11 +334,9 @@ jobs:
                  cd frontend
                  npm install
                  npm run build
-                 65wtw521tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+                 tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
                  aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive --region us-east-1
-                 
-                    # your code here 
-          
+                           
           - destroy_environment 
   deploy-backend:
     docker:
