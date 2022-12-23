@@ -227,6 +227,7 @@ jobs:
              fingerprints: 
               - "ca:fe:eb:61:28:a6:90:92:e8:4a:1d:88:f6:5b:2d:9d"
               - "3d:47:17:9e:95:97:00:a0:57:b2:aa:ee:df:cb:77:2d"      
+              - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"
       
               # attach workspace
       - attach_workspace:
@@ -320,18 +321,19 @@ jobs:
           - run:
               name: Get backend url
               command: |
-                    export BACKEND_IP=$(aws --region us-east-1 ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=instance.group-name,Values=UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}"  --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)           
+                    export BACKEND_IP=$(aws --region us-east-1 ec2 describe-instances --filters "Name=instance-state-name,Values=running"  --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)           
                     export API_URL="http://${BACKEND_IP}:3030"
                     echo "API_URL = ${API_URL}"
                     echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
                     cat frontend/.env
+              #      "Name=instance.group-name,Values=UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}" 
           - run:
               name: Deploy frontend objects
               command: |
                  cd frontend
                  npm install
                  npm run build
-                 tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+                 65wtw521tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
                  aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive --region us-east-1
                  
                     # your code here 
@@ -346,6 +348,7 @@ jobs:
              fingerprints: 
               - "ca:fe:eb:61:28:a6:90:92:e8:4a:1d:88:f6:5b:2d:9d"
               - "3d:47:17:9e:95:97:00:a0:57:b2:aa:ee:df:cb:77:2d"   
+              - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"
       - attach_workspace:
          at: ~/
       - run:
@@ -478,36 +481,36 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      #- build-frontend
          #filters:
             #branches:
              # only: [dev]
-      - build-backend
+      #- build-backend
           #filters:
             #branches:
            #   only: [dev]
-      - test-frontend:
-          requires: [build-frontend]
+      #- test-frontend:
+        #  requires: [build-frontend]
           #filters:
            # branches:
             #  only: [dev]          
-      - test-backend:
-          requires: [build-backend]
+      #- test-backend:
+       #   requires: [build-backend]
           #filters:
             #branches: 
            #   only: [dev]
-      - scan-backend:
-          requires: [build-backend]
+      #- scan-backend:
+       #   requires: [build-backend]
           #filters:
             #branches:
            #   only: [dev]          
-      - scan-frontend:
-         requires: [build-frontend]
+      #- scan-frontend:
+       #  requires: [build-frontend]
           #filters:
             #branches: 
              # only: [dev]
-      - deploy-infrastructure: 
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #- deploy-infrastructure: 
+       #   requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           #filters:
            # branches:
             #  only: [test-feature-branch]
@@ -516,8 +519,8 @@ workflows:
              - deploy-infrastructure 
       - run-migrations:
           requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
+     # - deploy-frontend:
+      #    requires: [run-migrations]
       - deploy-backend:
          requires: [run-migrations]
       - smoke-test:
