@@ -322,12 +322,12 @@ jobs:
           - run:
               name: Get backend url
               command: |
-                    export BACKEND_IP=$(aws --region us-east-1 ec2 describe-instances --filters "Name=instance-state-name,Values=running"  --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)           
+                    export BACKEND_IP=$(aws --region us-east-1 ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=instance.group-name,Values=UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}"   --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)           
                     export API_URL="http://${BACKEND_IP}:3030"
                     echo "API_URL = ${API_URL}"
                     echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
                     cat frontend/.env
-              #      "Name=instance.group-name,Values=UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}" 
+              #      
           - run:
               name: Deploy frontend objects
               command: |
@@ -522,7 +522,7 @@ workflows:
         #  requires: [configure-infrastructure]
      # - deploy-frontend:
       #    requires: [run-migrations]
-      - deploy-backend:
+      #- deploy-backend
        #  requires: [run-migrations]
      # - smoke-test:
       #    requires: [deploy-backend, deploy-frontend] 
