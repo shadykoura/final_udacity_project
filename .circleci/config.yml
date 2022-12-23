@@ -225,7 +225,7 @@ jobs:
      
       - add_ssh_keys:
              fingerprints: 
-              - "3c:51:bf:58:87:35:bf:fc:de:24:d5:ab:75:aa:67:5d:5f:25:6d:19"
+              - "d6:d4:0a:fe:6d:76:2b:ef:ba:2f:ba:32:dc:c5:f4:0c"
               - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"      
        #       - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"
               
