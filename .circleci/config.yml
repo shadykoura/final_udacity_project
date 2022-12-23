@@ -225,9 +225,10 @@ jobs:
      
       - add_ssh_keys:
              fingerprints: 
-              - "ca:fe:eb:61:28:a6:90:92:e8:4a:1d:88:f6:5b:2d:9d"
-              - "3d:47:17:9e:95:97:00:a0:57:b2:aa:ee:df:cb:77:2d"      
-              - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"
+      #        - "ca:fe:eb:61:28:a6:90:92:e8:4a:1d:88:f6:5b:2d:9d"
+              - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"      
+       #       - "7f:43:05:05:86:63:5c:ff:e2:98:54:ef:c3:71:b0:a4"
+              
       
               # attach workspace
       - attach_workspace:
